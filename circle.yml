@@ -1,0 +1,25 @@
+machine:
+  post:
+    - pyenv global 2.7.12 3.5.2
+
+dependencies:
+  pre:
+    - git fetch --tags
+  post:
+    - python3 setup.py install
+    - ./pypirc.sh
+
+test:
+  override:
+    - pip install "pact-python == 0.7.0"
+    - pip3 install "pact-python == 0.7.0"
+    - SURFACE_URL=http://localhost:1234 python -m unittest discover -s mangrove/tests -p "*.py" -v
+    - SURFACE_URL=http://localhost:1234 python3 -m unittest discover -s mangrove/tests -p "*.py" -v
+
+deployment:
+  release:
+    tag: /[0-9]+(\.[0-9]+)*(b[0-9]+)?/
+    commands:
+      - git reset --hard
+      - python setup.py register -r pypi
+      - python setup.py sdist upload -r pypi
