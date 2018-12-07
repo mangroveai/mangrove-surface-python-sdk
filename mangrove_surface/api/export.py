@@ -21,6 +21,6 @@ class Export(Api):
                 "raw_variables": raw_variables,
                 "bin_format": bin_format,
                 "binned_variables": binned_variables,
-                "type": "data"
+                "type": "model"
             }
         )
